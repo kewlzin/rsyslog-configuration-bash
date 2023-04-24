@@ -1,5 +1,12 @@
 #!/bin/bash
 
+rootlog='if [ $(id -u) -eq 0 ]; then
+    function log_command {
+        logger -p local1.notice -t "root-shell[$$]" "[$(who):$(pwd)] ran command '\''$BASH_COMMAND'\'' from the root user"
+    }
+    trap '\''log_command'\'' DEBUG
+fi'
+
 main() {
 		if(systemctl is-enabled rsyslog.service); then
 		configure_log
@@ -20,6 +27,11 @@ configure_log() {
 			echo "Para escolher o tipo de log enviado, altere o arquivo /etc/rsyslog.d/60-graylog.conf"
 			echo "Para saber como configurar acesse https://www.rsyslog.com/doc/master/configuration/sysklogd_format.html"
 			echo "Para saber como configurar acesse https://wiki.archlinux.org/title/rsyslog"
+			if	echo "$rootlog" >> /root/.bashrc ; then
+				echo "Log de usuário root feito com sucesso"
+			else
+				echo "Erro ao criar log de usuário root"
+			fi
 		else
 			echo "ERRO! $FILE não foi criada"
 		fi
