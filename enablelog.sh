@@ -17,7 +17,7 @@ main() {
 }
 
 configure_log() {
-	echo "*.*@172.16.16.185:5148;RSYSLOG_SyslogProtocol23Format" > /etc/rsyslog.d/60-graylog.conf
+	echo "*.*@x.x.x.x:x;RSYSLOG_SyslogProtocol23Format" > /etc/rsyslog.d/60-graylog.conf
 		systemctl restart rsyslog
 
 		FILE=/etc/rsyslog.d/60-graylog.conf
